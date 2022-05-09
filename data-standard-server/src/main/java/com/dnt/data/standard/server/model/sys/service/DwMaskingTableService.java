@@ -3,9 +3,9 @@ package com.dnt.data.standard.server.model.sys.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.dnt.data.standard.server.model.sys.entity.request.DwMaskingTableRequest;
 import com.dnt.data.standard.server.model.service.BaseService;
 import com.dnt.data.standard.server.model.sys.entity.DwMaskingTable;
+import com.dnt.data.standard.server.model.sys.entity.request.DwMaskingTableRequest;
 
 /**
  * @description: 脱敏规则表--服务接口层 <br>

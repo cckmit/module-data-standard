@@ -2,9 +2,9 @@ package com.dnt.data.standard.server.model.standard.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.dnt.data.standard.server.model.standard.entity.request.DwTargetAttributeRequest;
 import com.dnt.data.standard.server.model.service.BaseService;
 import com.dnt.data.standard.server.model.standard.entity.DwTargetAttribute;
+import com.dnt.data.standard.server.model.standard.entity.request.DwTargetAttributeRequest;
 
 /**
  * @description: 指标属性--服务接口层 <br>

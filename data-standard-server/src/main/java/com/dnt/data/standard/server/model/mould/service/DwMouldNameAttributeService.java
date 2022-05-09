@@ -2,8 +2,8 @@ package com.dnt.data.standard.server.model.mould.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.dnt.data.standard.server.model.mould.entity.request.DwMouldNameAttributeRequest;
 import com.dnt.data.standard.server.model.mould.entity.DwMouldNameAttribute;
+import com.dnt.data.standard.server.model.mould.entity.request.DwMouldNameAttributeRequest;
 import com.dnt.data.standard.server.model.service.BaseService;
 
 /**

@@ -1,9 +1,9 @@
 package com.dnt.data.standard.server.model.sys.controller;
 
 import com.baomidou.mybatisplus.extension.api.R;
+import com.dnt.data.standard.server.model.controller.BaseController;
 import com.dnt.data.standard.server.model.sys.entity.request.DwUserRequest;
 import com.dnt.data.standard.server.model.sys.service.DwUserService;
-import com.dnt.data.standard.server.model.controller.BaseController;
 import com.dnt.data.standard.server.web.Result;
 import com.google.common.base.Optional;
 import io.swagger.annotations.Api;

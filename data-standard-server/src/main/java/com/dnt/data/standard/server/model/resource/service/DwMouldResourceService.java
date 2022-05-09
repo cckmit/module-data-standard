@@ -3,9 +3,8 @@ package com.dnt.data.standard.server.model.resource.service;
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.dnt.data.standard.server.model.resource.entity.request.*;
 import com.dnt.data.standard.server.model.resource.entity.DwMouldResource;
-import com.dnt.data.warehouse.server.model.resource.entity.request.*;
+import com.dnt.data.standard.server.model.resource.entity.request.*;
 import com.dnt.data.standard.server.model.service.BaseService;
 
 import java.util.List;

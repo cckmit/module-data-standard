@@ -2,10 +2,10 @@ package com.dnt.data.standard.server.model.sys.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.dnt.data.standard.server.model.sys.entity.request.DwUserRequest;
-import com.dnt.data.standard.server.model.sys.entity.response.DwUserResponse;
 import com.dnt.data.standard.server.model.service.BaseService;
 import com.dnt.data.standard.server.model.sys.entity.DwUser;
+import com.dnt.data.standard.server.model.sys.entity.request.DwUserRequest;
+import com.dnt.data.standard.server.model.sys.entity.response.DwUserResponse;
 
 /**
  * @description: 用户-服务接口层 <br>

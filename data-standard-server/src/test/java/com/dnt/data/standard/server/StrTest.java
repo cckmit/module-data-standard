@@ -1,7 +1,6 @@
 package com.dnt.data.standard.server;
 
 import cn.hutool.extra.pinyin.PinyinUtil;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;

@@ -2,10 +2,9 @@ package com.dnt.data.standard.server.model.resource.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.dnt.data.standard.server.model.resource.entity.request.*;
 import com.dnt.data.standard.server.model.controller.BaseController;
 import com.dnt.data.standard.server.model.mould.service.DwMouldService;
-import com.dnt.data.warehouse.server.model.resource.entity.request.*;
+import com.dnt.data.standard.server.model.resource.entity.request.*;
 import com.dnt.data.standard.server.model.resource.service.DwMouldResourceService;
 import com.dnt.data.standard.server.web.Result;
 import io.swagger.annotations.Api;

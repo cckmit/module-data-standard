@@ -1,9 +1,9 @@
 package com.dnt.data.standard.server.model.mould.controller;
 
 import com.baomidou.mybatisplus.extension.api.R;
-import com.dnt.data.standard.server.model.mould.entity.request.DwApplicationRequest;
 import com.dnt.data.standard.server.model.controller.BaseController;
 import com.dnt.data.standard.server.model.mould.entity.DwApplication;
+import com.dnt.data.standard.server.model.mould.entity.request.DwApplicationRequest;
 import com.dnt.data.standard.server.model.mould.service.DwApplicationService;
 import com.dnt.data.standard.server.web.Result;
 import com.google.common.base.Optional;

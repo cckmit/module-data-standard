@@ -1,7 +1,7 @@
 package com.dnt.data.standard.server.model.mould.dao;
 
-import com.dnt.data.standard.server.model.mould.entity.DwMouldCategory;
 import com.dnt.data.standard.server.model.dao.BaseDao;
+import com.dnt.data.standard.server.model.mould.entity.DwMouldCategory;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

@@ -1,9 +1,9 @@
 package com.dnt.data.standard.server.model.mould.controller;
 
 import com.baomidou.mybatisplus.extension.api.R;
-import com.dnt.data.standard.server.model.mould.entity.request.DwCurrencyAttributeRequest;
 import com.dnt.data.standard.server.model.controller.BaseController;
 import com.dnt.data.standard.server.model.mould.entity.DwCurrencyAttribute;
+import com.dnt.data.standard.server.model.mould.entity.request.DwCurrencyAttributeRequest;
 import com.dnt.data.standard.server.model.mould.service.DwCurrencyAttributeService;
 import com.dnt.data.standard.server.web.Result;
 import com.google.common.base.Optional;

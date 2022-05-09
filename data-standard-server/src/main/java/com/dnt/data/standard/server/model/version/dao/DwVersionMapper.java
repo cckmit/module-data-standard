@@ -1,7 +1,7 @@
 package com.dnt.data.standard.server.model.version.dao;
 
-import com.dnt.data.standard.server.model.version.entity.DwVersion;
 import com.dnt.data.standard.server.model.dao.BaseDao;
+import com.dnt.data.standard.server.model.version.entity.DwVersion;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
