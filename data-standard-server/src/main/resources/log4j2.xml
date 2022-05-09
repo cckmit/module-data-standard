@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--设置log4j2的自身log级别为warn-->
+<!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+<!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，
+    当设置成trace时，你会看到log4j2内部各种详细输出-->
+<!--monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数-->
+
+<configuration status="warn" monitorInterval="30">
+    <Properties>
+        <!--自定义一些常量，之后使用${变量名}引用-->
+        <Property name="projectName">dnt-warehouse-server6002</Property>
+        <Property name="LOG_PATTERN">{"logger": "%logger", "level": "%level", "msg": "%message"}%n</Property>
+    </Properties>
+    <!--先定义所有的appender-->
+    <appenders>
+        <!--这个输出控制台的配置-->
+        <console name="Console" target="SYSTEM_OUT">
+            <!--输出日志的格式-->
+            <PatternLayout pattern="%highlight{%d{HH:mm:ss.SSS} [%t] %-5level %logger{36}} - %msg%n"/>
+        </console>
+        <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，这个也挺有用的，适合临时测试用-->
+        <!--<File name="log" fileName="log/test.log" append="false">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>-->
+        <!-- 这个会打印出所有的info及以下级别的信息，每次大小超过size，
+        则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
+        <RollingFile name="RollingFileDebug" fileName="./logs/${projectName}/${projectName}-debug.log"
+                     filePattern="./logs/$${date:yyyy-MM}/${projectName}/${projectName}-debug-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+                <ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+        <!--大坑记录仪：这里经过多次测试，搞清了其套路，坑爹的博客，基本都是各种扒，根本没有试是否好用-->
+        <!-- 这里的日志类似流一样的进入 RollingFileInfo ， 然后经过 ThresholdFilter 进行过滤。
+            ps:这里就是坑了，如果ThresholdFilter的顺序不一样的话，输入的结果是不一样的！！！
+                因为经过ThresholdFilter的时候，如果有匹配项，则直接打印日志了，所以需要把高等级的日志级别放在前面
+                并且，onMatch属性设置为DENY，过滤掉高等级的日志；onMismatch设置为NEUTRAL，把低等级的日志放行，
+                到我们想要的级别后，onMache设为ACCEPT，获取到日志，并onMismatch设置为DENY，丢弃低等级日志，并执行结束-->
+        <RollingFile name="RollingFileInfo" fileName="./logs/${projectName}/${projectName}-info.log"
+                     filePattern="./logs/$${date:yyyy-MM}/${projectName}/${projectName}-info-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="RollingFileWarn" fileName="./logs/${projectName}/${projectName}-warn.log"
+                     filePattern="./logs/$${date:yyyy-MM}/${projectName}/${projectName}-warn-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <!--日志级别过滤器 高于  WARN 放低于 WARN 忽略-->
+                <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <!--按时间节点拆分-->
+                <TimeBasedTriggeringPolicy/>
+                <!--按照日志大小 拆分-->
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 -->
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+
+        <RollingFile name="RollingFileError" fileName="./logs/${projectName}/${projectName}-error.log"
+                     filePattern="./logs/$${date:yyyy-MM}/${projectName}/${projectName}-error-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="ERROR"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="mouldServiceLog"
+                     fileName="./logs/${projectName}/${projectName}-mould-service-warn.log"
+                     filePattern="./logs/$${date:yyyy-MM}/${projectName}/${projectName}-mould-service-warn-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <Socket name="logstash-tcp" host="172.24.15.14" port="4560" protocol="TCP">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Socket>
+
+    </appenders>
+    <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
+    <loggers>
+        <!--过滤掉spring和mybatis-plus的一些无用的debug信息-->
+        <logger name="com.baomidou" level="WARN"/>
+        <logger name="org.quartz" level="INFO"/>
+        <logger name="org.springframework" level="INFO"/>
+        <logger name="com.netflix" level="WARN"/>
+        <logger name="org.apache" level="WARN"/>
+        <logger name="io.lettuce" level="WARN"/>
+        <logger name="io.netty" level="WARN"/>
+        <logger name="springfox.bean" level="WARN"/>
+        <logger name="springfox.documentation" level="WARN"/>
+        <logger name="org.mybatis" level="INFO" />
+        <logger name="com.dnt.data.standard.server.model.mould.service.impl.DwMouldServiceImpl" level="WARN" additivity="true">
+            <appender-ref ref="mouldServiceLog"/>
+        </logger>
+        <root level="ALL">
+            <appender-ref ref="Console" level="DEBUG"/>
+            <appender-ref ref="RollingFileDebug"/>
+            <appender-ref ref="RollingFileInfo"/>
+            <appender-ref ref="RollingFileWarn"/>
+            <appender-ref ref="RollingFileError"/>
+        </root>
+
+        <!--AsyncLogger :异步日志,LOG4J有三种日志模式,全异步日志,混合模式,同步日志,性能从高到底,线程越多效率越高,也可以避免日志卡死线程情况发生-->
+        <!--additivity="false" : additivity设置事件是否在root logger输出，为了避免重复输出，可以在Logger 标签下设置additivity为”false”-->
+        <AsyncLogger name="AsyncLogger" level="trace" includeLocation="false" additivity="false">
+            <appender-ref ref="logstash-tcp"/>
+        </AsyncLogger>
+
+    </loggers>
+
+
+</configuration>
