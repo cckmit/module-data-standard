@@ -223,7 +223,7 @@ public class DwVersionServiceImpl extends BaseServiceImpl<DwVersionMapper,DwVers
         m21.put("name","数据字典名称");
         m21.put("code","标识编码");
         m21.put("alias","别名");
-        m21.put("releaseStatus","发布状态");
+        m21.put("releaseStatusStr","发布状态");
         m21.put("description","描述");
         m2.add(m21);
         mHeader.put(2,m2);
@@ -232,7 +232,7 @@ public class DwVersionServiceImpl extends BaseServiceImpl<DwVersionMapper,DwVers
         m31.put("name","指标名称");
         m31.put("code","编码");
         m31.put("alias","指标别名");
-        m31.put("releaseStatus","发布状态");
+        m31.put("releaseStatusStr","发布状态");
         m31.put("source","来源系统");
         m3.add(m31);
         mHeader.put(3,m3);
@@ -240,7 +240,7 @@ public class DwVersionServiceImpl extends BaseServiceImpl<DwVersionMapper,DwVers
         Map<Object, Object> m41 = MapUtil.newHashMap(true);
         m41.put("name","规则名称");
         m41.put("description","规则描述");
-        m41.put("releaseStatus","发布状态");
+        m41.put("releaseStatusStr","发布状态");
         m41.put("mouldName","模型名");
         m4.add(m41);
 
@@ -249,7 +249,7 @@ public class DwVersionServiceImpl extends BaseServiceImpl<DwVersionMapper,DwVers
         Map<Object, Object> m51 = MapUtil.newHashMap(true);
         m51.put("name","基础库名称");
         m51.put("code","基础库标识");
-        m51.put("releaseStatus","发布状态");
+        m51.put("releaseStatusStr","发布状态");
         m51.put("description","描述");
         m5.add(m51);
         mHeader.put(5,m5);
