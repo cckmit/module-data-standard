@@ -155,6 +155,7 @@ public class DwTargetServiceImpl extends BaseServiceImpl<DwTargetMapper, DwTarge
         DwTarget dt = new DwTarget();
         BeanValueTrimUtil.beanValueTrim(request);
         BeanUtils.copyProperties(request,dt);
+        dt.setCreateUser(userCode);
         //NO.2 更新数据
         this.dwTargetMapper.insert(dt);
         return Result.ok("添加数据成功");
@@ -187,7 +188,7 @@ public class DwTargetServiceImpl extends BaseServiceImpl<DwTargetMapper, DwTarge
         Integer dbReleaseStatus = Optional.fromNullable(targetDb.getReleaseStatus()).isPresent()?targetDb.getReleaseStatus():ReleaseStatusEnum.UNRELEASE.getCode();
         //当数据库中的数据发布状态为 未发布则不变撞他 如果是已发布则变为 已更新
         dt.setReleaseStatus(dbReleaseStatus==ReleaseStatusEnum.UNRELEASE.getCode()?ReleaseStatusEnum.UNRELEASE.getCode():ReleaseStatusEnum.RELEASEUPDATE.getCode());
-
+        dt.setUpdateUser(userCode);
         int dtu = this.dwTargetMapper.updateById(dt);
         //使用Lambda表达式，实现多线程
         new Thread(()->{

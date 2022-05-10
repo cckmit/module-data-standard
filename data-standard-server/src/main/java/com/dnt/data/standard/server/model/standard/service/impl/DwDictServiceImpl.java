@@ -198,7 +198,7 @@ public class DwDictServiceImpl extends BaseServiceImpl<DwDictMapper, DwDict> imp
         //当数据库中的数据发布状态为 未发布则不变撞他 如果是已发布则变为 已更新
         dict.setReleaseStatus(dbReleaseStatus==ReleaseStatusEnum.UNRELEASE.getCode()?ReleaseStatusEnum.UNRELEASE.getCode():ReleaseStatusEnum.RELEASEUPDATE.getCode());
 
-
+        dict.setUpdateUser(userCode);
         //NO.2 更新数据
         int uf = this.dwDictMapper.updateById(dict);
         List<DwDictField> fields = request.getDFieldList();

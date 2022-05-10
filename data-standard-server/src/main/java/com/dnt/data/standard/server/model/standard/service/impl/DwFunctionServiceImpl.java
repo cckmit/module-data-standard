@@ -89,6 +89,7 @@ public class DwFunctionServiceImpl extends BaseServiceImpl<DwFunctionMapper, DwF
             return Result.fail("添加函数时名称已存在");
         }
         //NO.2 更新数据
+        df.setCreateUser(userCode);
         this.dwFunctionMapper.insert(df);
         return Result.ok("添加函数成功");
     }
@@ -109,6 +110,7 @@ public class DwFunctionServiceImpl extends BaseServiceImpl<DwFunctionMapper, DwF
         BeanValueTrimUtil.beanValueTrim(request);
         BeanUtils.copyProperties(request,df);
         //NO.2 更新数据
+        df.setUpdateUser(userCode);
         int dfu = this.dwFunctionMapper.updateById(df);
         return Result.ok("更新成功了"+dfu+"条数据");
     }
