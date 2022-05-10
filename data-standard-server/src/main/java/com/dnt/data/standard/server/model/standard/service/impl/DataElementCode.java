@@ -10,10 +10,13 @@ import lombok.Getter;
  */
 public enum DataElementCode {
     //整数型
-    INT(1,"整数型"),
+    DATE(1,"日期型"),
     //浮点型
-    FLOAT(2,"浮点型");
-
+    STRING(2,"字符串型"),
+    //整数型
+    INT(3,"整数型"),
+    //浮点型
+    FLOAT(4,"浮点型");
     @Getter
     private final int code;
     /**

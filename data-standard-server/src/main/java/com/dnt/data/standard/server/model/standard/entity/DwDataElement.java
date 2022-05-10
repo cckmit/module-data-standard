@@ -51,6 +51,8 @@ public class DwDataElement extends BaseEntity implements Serializable {
      * 数据类型  1 整数型  2 浮点型
      */
     private Integer typeId;
+    @TableField(exist = false)
+    private String typeName="";
     /**
      * 长度
      */
