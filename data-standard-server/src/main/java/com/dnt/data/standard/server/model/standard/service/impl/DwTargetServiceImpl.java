@@ -189,6 +189,7 @@ public class DwTargetServiceImpl extends BaseServiceImpl<DwTargetMapper, DwTarge
         //当数据库中的数据发布状态为 未发布则不变撞他 如果是已发布则变为 已更新
         dt.setReleaseStatus(dbReleaseStatus==ReleaseStatusEnum.UNRELEASE.getCode()?ReleaseStatusEnum.UNRELEASE.getCode():ReleaseStatusEnum.RELEASEUPDATE.getCode());
         dt.setUpdateUser(userCode);
+        dt.setUpdateTime(new Date());
         int dtu = this.dwTargetMapper.updateById(dt);
         //使用Lambda表达式，实现多线程
         new Thread(()->{

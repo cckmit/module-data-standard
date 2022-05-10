@@ -199,6 +199,7 @@ public class DwDictServiceImpl extends BaseServiceImpl<DwDictMapper, DwDict> imp
         dict.setReleaseStatus(dbReleaseStatus==ReleaseStatusEnum.UNRELEASE.getCode()?ReleaseStatusEnum.UNRELEASE.getCode():ReleaseStatusEnum.RELEASEUPDATE.getCode());
 
         dict.setUpdateUser(userCode);
+        dict.setUpdateTime(new Date());
         //NO.2 更新数据
         int uf = this.dwDictMapper.updateById(dict);
         List<DwDictField> fields = request.getDFieldList();

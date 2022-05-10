@@ -111,6 +111,7 @@ public class DwFunctionServiceImpl extends BaseServiceImpl<DwFunctionMapper, DwF
         BeanUtils.copyProperties(request,df);
         //NO.2 更新数据
         df.setUpdateUser(userCode);
+        df.setUpdateTime(new Date());
         int dfu = this.dwFunctionMapper.updateById(df);
         return Result.ok("更新成功了"+dfu+"条数据");
     }
