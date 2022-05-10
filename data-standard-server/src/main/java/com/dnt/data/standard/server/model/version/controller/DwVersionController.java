@@ -93,12 +93,13 @@ public class DwVersionController extends BaseController {
     @ApiOperation(value="版本的发布功能", notes="版本的发布功能接口")
     @PostMapping(value={"/doVersionRelease"})
     public R doVersionRelease(@RequestHeader Long projectId,
+                              @RequestHeader String userCode,
                                     @RequestBody VersionReleaseRequest request){
         if(log.isInfoEnabled()) {
             log.info("DwVersionController-->doVersionRelease 版本的发布功能");
         }
         request.setProjectId(projectId);
-        return dwVersionService.doVersionRelease(request);
+        return dwVersionService.doVersionRelease(request,userCode);
     }
     /**
      * 查看详情

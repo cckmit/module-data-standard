@@ -66,5 +66,5 @@ public interface DwVersionService extends BaseService<DwVersion> {
      * @param request
      * @return
      */
-    R doVersionRelease(VersionReleaseRequest request);
+    R doVersionRelease(VersionReleaseRequest request,String userCode);
 }

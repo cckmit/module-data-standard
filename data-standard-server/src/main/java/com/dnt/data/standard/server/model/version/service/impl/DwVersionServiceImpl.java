@@ -209,58 +209,48 @@ public class DwVersionServiceImpl extends BaseServiceImpl<DwVersionMapper,DwVers
         }
         Map<Integer,List<Map<Object,Object>>> mHeader = MapUtil.newHashMap();
         List<Map<Object,Object>> m1 = ListUtil.list(false);
-        Map<Object, Object> m11 = MapUtil.builder()
-                //.put("id","id")
-                .put("name","数据元名称")
-                .put("code","标识编码")
-                .put("releaseStatusStr","发布状态")
-                .put("createUser","创建人")
-                .put("description","描述")
-                .build();
+        Map<Object, Object> m11 = MapUtil.newHashMap(true);
+        m11.put("name","数据元名称");
+        m11.put("code","标识编码");
+        m11.put("releaseStatusStr","发布状态");
+        m11.put("createUser","创建人");
+        m11.put("description","描述");
         m1.add(m11);
 
         mHeader.put(1,m1);
         List<Map<Object,Object>> m2 = ListUtil.list(false);
-        Map<Object, Object> m21 = MapUtil.builder()
-                //.put("id","id")
-                .put("name","数据字典名称")
-                .put("code","标识编码")
-                .put("alias","别名")
-                .put("releaseStatus","发布状态")
-                .put("description","描述")
-                .build();
+        Map<Object, Object> m21 = MapUtil.newHashMap(true);
+        m21.put("name","数据字典名称");
+        m21.put("code","标识编码");
+        m21.put("alias","别名");
+        m21.put("releaseStatus","发布状态");
+        m21.put("description","描述");
         m2.add(m21);
         mHeader.put(2,m2);
         List<Map<Object,Object>> m3 = ListUtil.list(false);
-        Map<Object, Object> m31 = MapUtil.builder()
-                //.put("id","id")
-                .put("name","指标名称")
-                .put("code","编码")
-                .put("alias","指标别名")
-                .put("releaseStatus","发布状态")
-                .put("source","来源系统")
-                .build();
+        Map<Object, Object> m31 = MapUtil.newHashMap(true);
+        m31.put("name","指标名称");
+        m31.put("code","编码");
+        m31.put("alias","指标别名");
+        m31.put("releaseStatus","发布状态");
+        m31.put("source","来源系统");
         m3.add(m31);
         mHeader.put(3,m3);
         List<Map<Object,Object>> m4 = ListUtil.list(false);
-        Map<Object, Object> m41 = MapUtil.builder()
-                //.put("id","id")
-                .put("name","规则名称")
-                .put("description","规则描述")
-                .put("releaseStatus","发布状态")
-                .put("mouldName","模型名")
-                .build();
+        Map<Object, Object> m41 = MapUtil.newHashMap(true);
+        m41.put("name","规则名称");
+        m41.put("description","规则描述");
+        m41.put("releaseStatus","发布状态");
+        m41.put("mouldName","模型名");
         m4.add(m41);
 
         mHeader.put(4,m4);
         List<Map<Object,Object>> m5 = ListUtil.list(false);
-        Map<Object, Object> m51 = MapUtil.builder()
-                //.put("id","id")
-                .put("name","基础库名称")
-                .put("code","基础库标识")
-                .put("releaseStatus","发布状态")
-                .put("description","描述")
-                .build();
+        Map<Object, Object> m51 = MapUtil.newHashMap(true);
+        m51.put("name","基础库名称");
+        m51.put("code","基础库标识");
+        m51.put("releaseStatus","发布状态");
+        m51.put("description","描述");
         m5.add(m51);
         mHeader.put(5,m5);
 
@@ -274,7 +264,7 @@ public class DwVersionServiceImpl extends BaseServiceImpl<DwVersionMapper,DwVers
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public R doVersionRelease(VersionReleaseRequest request) {
+    public R doVersionRelease(VersionReleaseRequest request,String userCode) {
         if(log.isInfoEnabled()) {
             log.info("DwVersionServiceImpl-->doVersionRelease 版本的发布功能");
         }
@@ -311,6 +301,7 @@ public class DwVersionServiceImpl extends BaseServiceImpl<DwVersionMapper,DwVers
         //NO.1 记录发布的版本信息
         DwVersion v = new DwVersion();
         BeanUtils.copyProperties(request,v);
+        v.setCreateUser(userCode);
         int ii = baseMapper.insert(v);
         log.info("#####成功添加了{}条版本信息#####",ii);
         //NO.2 版本与知道点的关联关系

@@ -92,9 +92,10 @@ public class DwDictController extends BaseController {
     @ApiOperation(value="添加数据字典", notes="添加数据字典接口")
     @PostMapping(value={"/saveDict"})
     public R saveDict(@RequestHeader String userCode,
+                          @RequestHeader Long projectId,
                           @RequestBody DwDictRequest request){
         log.info("DwDictController-->saveDict 添加数据字典 ");
-
+        request.setProjectId(projectId);
         return  this.dwDictService.saveDict(request,userCode);
     }
 
