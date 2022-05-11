@@ -248,7 +248,7 @@ public class DwDbBaseServiceImpl extends BaseServiceImpl<DwDbBaseMapper, DwDbBas
         d.setOperationFlag("update");
         d.setOperationInfo("更新数据操作成功");
         d.setDataJson(JSON.toJSONString(dbMn));
-        d.setDataField1(JSON.toJSONString(rs));
+        d.setDataField1(JSON.toJSONString(listRes));
         d.setDataCreateUser(dbMn.getCreateUser());
         d.setDataCreateTime(dbMn.getCreateTime());
         d.setDataUpdateUser(dbMn.getUpdateUser());

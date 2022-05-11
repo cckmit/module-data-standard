@@ -119,7 +119,7 @@ public class DbBaseServiceImpl extends BaseServiceImpl<DwDbBaseMapper,DwDbBase> 
                             .dataUpdateUser(de.getUpdateUser())
                             .dataUpdateTime(de.getUpdateTime())
                             .dataJson(JSON.toJSONString(de))
-                            .dataField1(JSON.toJSONString(rs))
+                            .dataField1(JSON.toJSONString(listRes))
                             .build();
                     vdrList.add(vdr);
                 }
