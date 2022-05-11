@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dnt.data.standard.server.model.mould.dao.DwMouldNameMapper;
 import com.dnt.data.standard.server.model.mould.entity.DwMouldName;
+import com.dnt.data.standard.server.model.service.impl.BaseServiceImpl;
 import com.dnt.data.standard.server.model.version.entity.request.CategoryPageListRequest;
 import com.dnt.data.standard.server.model.version.entity.response.VersionDataResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ import java.util.Map;
  */
 @Slf4j
 @Service("mould_name")
-public class MouldNameServiceImpl implements VersionCategoryDataList {
+public class MouldNameServiceImpl extends BaseServiceImpl<DwMouldNameMapper,DwMouldName> implements VersionCategoryDataList {
 
     @Resource
     private DwMouldNameMapper dwMouldNameMapper;
@@ -66,7 +67,10 @@ public class MouldNameServiceImpl implements VersionCategoryDataList {
             //NO.3 查询选择数据元关联字段
             for(DwMouldName de :mList){
                 Long id = de.getId();
+                Long cid = de.getCategoryId();
+                String cName =getCategoryNameById(cid);
 
+                de.setCategoryName(cName);
                 if(selectId.longValue() == id.longValue()){
                     VersionDataResponse vdr = VersionDataResponse.builder()
                             .dataId(id)

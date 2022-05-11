@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.dnt.data.standard.server.model.service.impl.BaseServiceImpl;
 import com.dnt.data.standard.server.model.standard.dao.DwTargetMapper;
 import com.dnt.data.standard.server.model.standard.entity.DwTarget;
 import com.dnt.data.standard.server.model.version.entity.request.CategoryPageListRequest;
@@ -25,7 +26,7 @@ import java.util.Map;
  */
 @Slf4j
 @Service("target")
-public class TargetServiceImpl implements VersionCategoryDataList {
+public class TargetServiceImpl extends BaseServiceImpl<DwTargetMapper,DwTarget> implements VersionCategoryDataList {
 
     @Resource
     private DwTargetMapper dwTargetMapper;
@@ -66,6 +67,10 @@ public class TargetServiceImpl implements VersionCategoryDataList {
             for(DwTarget de :mList){
                 Long id = de.getId();
                 if(selectId.longValue() == id.longValue()){
+                    Long cid = de.getCategoryId();
+                    String cName =getCategoryNameById(cid);
+                    de.setCategoryName(cName);
+
                     VersionDataResponse vdr = VersionDataResponse.builder()
                             .dataId(id)
                             .dataCategoryId(de.getCategoryId())

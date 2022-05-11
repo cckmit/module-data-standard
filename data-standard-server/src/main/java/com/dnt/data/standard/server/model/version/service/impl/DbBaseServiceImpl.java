@@ -8,16 +8,19 @@ import com.dnt.data.standard.server.model.mould.dao.DwDbBaseMapper;
 import com.dnt.data.standard.server.model.mould.entity.DwDbBase;
 import com.dnt.data.standard.server.model.mould.entity.DwDbBaseField;
 import com.dnt.data.standard.server.model.mould.entity.response.DwDbBaseFieldResponse;
+import com.dnt.data.standard.server.model.service.impl.BaseServiceImpl;
 import com.dnt.data.standard.server.model.version.entity.request.CategoryPageListRequest;
 import com.dnt.data.standard.server.model.version.entity.response.VersionDataResponse;
 import com.dnt.data.standard.server.utils.BeanValueTrimUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +32,7 @@ import java.util.Map;
  */
 @Slf4j
 @Service("db_base")
-public class DbBaseServiceImpl implements VersionCategoryDataList {
+public class DbBaseServiceImpl extends BaseServiceImpl<DwDbBaseMapper,DwDbBase> implements VersionCategoryDataList {
     @Resource
     private DwDbBaseMapper dwDbBaseMapper;
 
@@ -89,8 +92,21 @@ public class DbBaseServiceImpl implements VersionCategoryDataList {
 
 
             for(DwDbBase de :mList){
+
                 Long id = de.getId();
                 if(selectId.longValue() == id.longValue()){
+                    Map<String,Object> rs = new HashMap<>();
+                    String headStr = de.getContentHeader();
+                    if(StringUtils.isNotEmpty(headStr)){
+                        rs.put("header",JSON.parseArray(headStr));
+                    }
+                    rs.put("data",listRes);
+
+
+                    Long cid = de.getCategoryId();
+                    String cName =getCategoryNameById(cid);
+
+                    de.setCategoryName(cName);
                     VersionDataResponse vdr = VersionDataResponse.builder()
                             .dataId(id)
                             .dataCategoryId(de.getCategoryId())
@@ -103,7 +119,7 @@ public class DbBaseServiceImpl implements VersionCategoryDataList {
                             .dataUpdateUser(de.getUpdateUser())
                             .dataUpdateTime(de.getUpdateTime())
                             .dataJson(JSON.toJSONString(de))
-                            .dataField1(JSON.toJSONString(listRes))
+                            .dataField1(JSON.toJSONString(rs))
                             .build();
                     vdrList.add(vdr);
                 }

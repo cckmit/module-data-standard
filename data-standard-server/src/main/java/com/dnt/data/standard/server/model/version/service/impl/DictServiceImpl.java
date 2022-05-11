@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.dnt.data.standard.server.model.service.impl.BaseServiceImpl;
 import com.dnt.data.standard.server.model.standard.dao.DwDataElementMapper;
 import com.dnt.data.standard.server.model.standard.dao.DwDictMapper;
 import com.dnt.data.standard.server.model.standard.entity.DwDataElement;
@@ -29,7 +30,7 @@ import java.util.Map;
  */
 @Slf4j
 @Service("dict")
-public class DictServiceImpl implements VersionCategoryDataList {
+public class DictServiceImpl extends BaseServiceImpl<DwDictMapper,DwDict> implements VersionCategoryDataList {
     @Resource
     private DwDictMapper dwDictMapper;
     @Resource
@@ -80,6 +81,9 @@ public class DictServiceImpl implements VersionCategoryDataList {
             for(DwDict de :mList){
                 Long id = de.getId();
                 if(selectId.longValue() == id.longValue()){
+                    Long cid = de.getCategoryId();
+                    String cName =getCategoryNameById(cid);
+                    de.setCategoryName(cName);
                     VersionDataResponse vdr = VersionDataResponse.builder()
                             .dataId(id)
                             .dataCategoryId(de.getCategoryId())

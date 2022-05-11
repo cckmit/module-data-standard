@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.dnt.data.standard.server.model.service.impl.BaseServiceImpl;
 import com.dnt.data.standard.server.model.standard.dao.DwDataElementMapper;
 import com.dnt.data.standard.server.model.standard.entity.DwDataElement;
+import com.dnt.data.standard.server.model.standard.service.impl.DataElementCode;
 import com.dnt.data.standard.server.model.version.entity.request.CategoryPageListRequest;
 import com.dnt.data.standard.server.model.version.entity.response.VersionDataResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @description: 数据元列表查询--服务接口 <br>
@@ -25,7 +28,7 @@ import java.util.Map;
  */
 @Slf4j
 @Service("data_element")
-public class DataElementServiceImpl implements VersionCategoryDataList {
+public class DataElementServiceImpl extends BaseServiceImpl<DwDataElementMapper,DwDataElement> implements VersionCategoryDataList {
     @Resource
     private DwDataElementMapper dwDataElementMapper;
     @Resource
@@ -74,6 +77,12 @@ public class DataElementServiceImpl implements VersionCategoryDataList {
             for(DwDataElement de :mList){
                 Long id = de.getId();
                 if(selectId.longValue() == id.longValue()){
+                    Long cid = de.getCategoryId();
+                    String cName =getCategoryNameById(cid);
+                    de.setCategoryName(cName);
+                    if(Optional.ofNullable(de.getTypeId()).isPresent()) {
+                        de.setTypeName(DataElementCode.getValue(de.getTypeId()));
+                    }
                     VersionDataResponse vdr = VersionDataResponse.builder()
                             .dataId(id)
                             .dataCategoryId(de.getCategoryId())

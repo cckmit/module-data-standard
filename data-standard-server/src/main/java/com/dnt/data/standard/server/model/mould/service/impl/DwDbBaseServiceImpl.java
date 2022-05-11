@@ -202,6 +202,7 @@ public class DwDbBaseServiceImpl extends BaseServiceImpl<DwDbBaseMapper, DwDbBas
         //使用Lambda表达式，实现多线程
         new Thread(()->{
             DwVersionDataMapper dwVersionDataMapper = applicationContext.getBean(DwVersionDataMapper.class);
+
             DwVersionData d = insertVersionHistoryLog("dw_db_base",da);
             log.info(Thread.currentThread().getName()+"另一个线程增加更新日志信息");
             dwVersionDataMapper.insert(d);
@@ -211,6 +212,31 @@ public class DwDbBaseServiceImpl extends BaseServiceImpl<DwDbBaseMapper, DwDbBas
 
     private DwVersionData insertVersionHistoryLog(String tableName, DwDbBase dbMn) {
         DwVersionData d = new DwVersionData();
+        List<DwDbBaseField> lst = this.dwDbBaseMapper.selectDwDbBaseFieldByDbId(dbMn.getId());
+
+        List<DwDbBaseFieldResponse> listRes = new ArrayList<>();
+        //构建数据
+        lst.forEach(df->{
+            DwDbBaseFieldResponse dbfr = new DwDbBaseFieldResponse();
+            String s = df.getContentData();
+            BeanValueTrimUtil.beanValueTrim(df);
+            BeanUtils.copyProperties(df,dbfr);
+            dbfr.setContentData(JSON.parseArray(s));
+            listRes.add(dbfr);
+        });
+        Map<String,Object> rs = new HashMap<>();
+        String headStr = dbMn.getContentHeader();
+        if(StringUtils.isNotEmpty(headStr)){
+            rs.put("header",JSON.parseArray(headStr));
+        }
+        rs.put("data",listRes);
+
+
+        Long cid = dbMn.getCategoryId();
+        String cName =getCategoryNameById(cid);
+
+        dbMn.setCategoryName(cName);
+
         d.setProjectId(dbMn.getProjectId());
         d.setTableName(tableName);
         d.setDataId(dbMn.getId());

@@ -30,6 +30,9 @@ public class DwDataElement extends BaseEntity implements Serializable {
      * 分类目录
      */
     private Long categoryId;
+
+    @TableField(exist = false)
+    private String categoryName;
     /**
      * 数据元名称
      */
