@@ -234,6 +234,8 @@ public class DwDictServiceImpl extends BaseServiceImpl<DwDictMapper, DwDict> imp
         //使用Lambda表达式，实现多线程
         new Thread(()->{
             DwVersionDataMapper dwVersionDataMapper = applicationContext.getBean(DwVersionDataMapper.class);
+            Long categoryId = dict.getCategoryId();
+            dict.setCategoryName(getCategoryNameById(categoryId));
             DwVersionData d = insertVersionHistoryLog("dw_dict",dict);
             log.info(Thread.currentThread().getName()+"另一个线程增加更新日志信息");
             dwVersionDataMapper.insert(d);

@@ -12,7 +12,7 @@ public enum DataElementCode {
     //整数型
     DATE(1,"日期型"),
     //浮点型
-    STRING(2,"字符串型"),
+    STRING(2,"字符串类型"),
     //整数型
     INT(3,"整数型"),
     //浮点型

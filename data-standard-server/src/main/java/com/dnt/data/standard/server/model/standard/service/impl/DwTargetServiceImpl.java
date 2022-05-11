@@ -194,6 +194,10 @@ public class DwTargetServiceImpl extends BaseServiceImpl<DwTargetMapper, DwTarge
         //使用Lambda表达式，实现多线程
         new Thread(()->{
             DwVersionDataMapper dwVersionDataMapper = applicationContext.getBean(DwVersionDataMapper.class);
+            Long cid = dt.getCategoryId();
+            if(Optional.fromNullable(cid).isPresent()) {
+                dt.setCategoryName(getCategoryNameById(cid));
+            }
             DwVersionData d = insertVersionHistoryLog("dw_target",dt);
             log.info(Thread.currentThread().getName()+"另一个线程增加更新日志信息");
             dwVersionDataMapper.insert(d);
