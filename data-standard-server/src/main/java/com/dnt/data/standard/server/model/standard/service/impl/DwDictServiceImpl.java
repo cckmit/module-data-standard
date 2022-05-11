@@ -229,7 +229,11 @@ public class DwDictServiceImpl extends BaseServiceImpl<DwDictMapper, DwDict> imp
         }
         //批量更新数据字典关联字段
         if(CollectionUtils.isNotEmpty(updateFields)){
-            iu = this.dwDictMapper.updateDictFieldBatch(updateFields);
+            for(DwDictField upf:updateFields) {
+                List<DwDictField> upfs = new ArrayList<>();
+                upfs.add(upf);
+                iu = this.dwDictMapper.updateDictFieldBatch(upfs);
+            }
         }
         //使用Lambda表达式，实现多线程
         new Thread(()->{
