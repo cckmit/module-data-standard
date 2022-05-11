@@ -193,6 +193,10 @@ public class DwDbBaseServiceImpl extends BaseServiceImpl<DwDbBaseMapper, DwDbBas
         DwDbBase da = new DwDbBase();
         BeanValueTrimUtil.beanValueTrim(request);
         BeanUtils.copyProperties(request,da);
+        //以前台传的header为准确，，默认现在不传取数据库中的header
+        if(StringUtils.isEmpty(request.getContentHeader())) {
+            da.setContentHeader(dbBase.getContentHeader());
+        }
         //当数据库中的数据发布状态为 未发布则不变撞他 如果是已发布则变为 已更新
         da.setReleaseStatus(dbReleaseStatus==ReleaseStatusEnum.UNRELEASE.getCode()?ReleaseStatusEnum.UNRELEASE.getCode():ReleaseStatusEnum.RELEASEUPDATE.getCode());
         da.setUpdateTime(new Date());
