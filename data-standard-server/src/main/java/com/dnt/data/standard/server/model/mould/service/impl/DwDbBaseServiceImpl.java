@@ -230,7 +230,8 @@ public class DwDbBaseServiceImpl extends BaseServiceImpl<DwDbBaseMapper, DwDbBas
             rs.put("header",JSON.parseArray(headStr));
         }
         rs.put("data",listRes);
-
+        List<Map<String,Object>> jaList = new ArrayList<>();
+        jaList.add(rs);
 
         Long cid = dbMn.getCategoryId();
         String cName =getCategoryNameById(cid);
@@ -248,7 +249,7 @@ public class DwDbBaseServiceImpl extends BaseServiceImpl<DwDbBaseMapper, DwDbBas
         d.setOperationFlag("update");
         d.setOperationInfo("更新数据操作成功");
         d.setDataJson(JSON.toJSONString(dbMn));
-        d.setDataField1(JSON.toJSONString(listRes));
+        d.setDataField1(JSON.toJSONString(jaList));
         d.setDataCreateUser(dbMn.getCreateUser());
         d.setDataCreateTime(dbMn.getCreateTime());
         d.setDataUpdateUser(dbMn.getUpdateUser());

@@ -1,6 +1,7 @@
 package com.dnt.data.standard.server.model.version.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -102,7 +103,8 @@ public class DbBaseServiceImpl extends BaseServiceImpl<DwDbBaseMapper,DwDbBase> 
                     }
                     rs.put("data",listRes);
 
-
+                    List<Map<String,Object>> jaList = new ArrayList<>();
+                    jaList.add(rs);
                     Long cid = de.getCategoryId();
                     String cName =getCategoryNameById(cid);
 
@@ -119,7 +121,7 @@ public class DbBaseServiceImpl extends BaseServiceImpl<DwDbBaseMapper,DwDbBase> 
                             .dataUpdateUser(de.getUpdateUser())
                             .dataUpdateTime(de.getUpdateTime())
                             .dataJson(JSON.toJSONString(de))
-                            .dataField1(JSON.toJSONString(listRes))
+                            .dataField1(JSON.toJSONString(jaList))
                             .build();
                     vdrList.add(vdr);
                 }
