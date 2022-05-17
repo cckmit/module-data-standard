@@ -66,10 +66,10 @@ public class DwVersionServiceImpl extends BaseServiceImpl<DwVersionMapper,DwVers
         //每页显示的记录数
         Integer ps = request.getPageSize();
         Page<DwVersion> page = new Page<>(pn,ps);
-
+        //增加版本按日期 降序排列
         QueryWrapper<DwVersion> query = Wrappers.query();
-        query.like(StringUtils.isNotEmpty(request.getVersionName()),"version_name",request.getVersionName());
-
+        query.like(StringUtils.isNotEmpty(request.getVersionName()),"version_name",request.getVersionName())
+                .orderByDesc("id");
         return this.baseMapper.selectPage(page,query);
     }
 
@@ -180,7 +180,9 @@ public class DwVersionServiceImpl extends BaseServiceImpl<DwVersionMapper,DwVers
 
         wq.eq("a.delete_model",1)
                 .eq(Optional.ofNullable(request.getProjectId()).isPresent(),"a.project_id",request.getProjectId())
-                .like(com.google.common.base.Optional.fromNullable(request.getCategoryId()).isPresent(),"b.path",request.getCategoryId());
+                .like(com.google.common.base.Optional.fromNullable(request.getCategoryId()).isPresent(),"b.path",request.getCategoryId())
+                .orderByDesc("a.id");
+
         VersionCategoryDataList vcDataList = applicationContext.getBean(dwType,VersionCategoryDataList.class);
 
         IPage<Map<String,Object>> pp =vcDataList.selectCategoryDataPageList(page,wq);
