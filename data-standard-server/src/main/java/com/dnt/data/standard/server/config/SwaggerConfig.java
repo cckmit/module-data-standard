@@ -25,7 +25,7 @@ public class SwaggerConfig {
                 .enable(swaggerEnable)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.dnt.data.warehouse.server.model"))
+                .apis(RequestHandlerSelectors.basePackage("com.dnt.data.standard.server.model"))
                 .paths(PathSelectors.any())
                 .build();
     }
