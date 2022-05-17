@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: data-warehouse-server
+    name: module-data-standard
   cloud:
     nacos:
       # 服务注册地址

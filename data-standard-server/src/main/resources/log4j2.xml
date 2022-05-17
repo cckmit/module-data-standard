@@ -8,7 +8,7 @@
 <configuration status="warn" monitorInterval="30">
     <Properties>
         <!--自定义一些常量，之后使用${变量名}引用-->
-        <Property name="projectName">dnt-warehouse-server6002</Property>
+        <Property name="projectName">module-data-standard6002</Property>
         <Property name="LOG_PATTERN">{"logger": "%logger", "level": "%level", "msg": "%message"}%n</Property>
     </Properties>
     <!--先定义所有的appender-->
