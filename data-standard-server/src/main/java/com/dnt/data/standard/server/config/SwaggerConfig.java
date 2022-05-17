@@ -32,9 +32,9 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("数仓服务")
+                .title("数据标准服务")
                 .contact(new Contact("陈红磊","/doc.html","honglei_chen@dnt.com.cn"))
-                .description("数仓服务api接口,是一个规范和完整的框架，用于生成、描述、调用和可视化 RESTful 风格的 Web 服务。")
+                .description("数据标准服务api接口,是一个规范和完整的框架，用于生成、描述、调用和可视化 RESTful 风格的 Web 服务。")
                 .version("1.0")
                 .build();
     }
