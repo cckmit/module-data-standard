@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /* *
  * @desc 通用业务属性value值
@@ -36,6 +37,8 @@ import java.util.List;
 public class DwCurrencyAttributeValueController extends BaseController {
     @Autowired
     private DwCurrencyAttributeValueService dwCurrencyAttributeValueService;
+    /*支持中英文字母数字下划线*/
+    public static  final  String REGEX_NAME= "^[a-zA-Z0-9_\u4e00-\u9fa5]+$";
 
     //获取数通用业务属性value值树形列表
     @ApiOperation(value = "获取通用业务属性value值树形列表", notes = "获取通用业务属性value值树形列表接口")
@@ -76,6 +79,31 @@ public class DwCurrencyAttributeValueController extends BaseController {
                                    @RequestBody DwCurrencyAttributeValueRequest request) {
         log.info("DwCurrencyAttributeValueController-->saveCurrencyAttribute 添加通用业务属性value值 ");
         request.setProjectId(projectId);
+
+        if (!Optional.fromNullable(request.getAttributeValue()).isPresent()){
+            return Result.fail("添加通用业务属性时属性值不能为空");
+        }
+        if (!Optional.fromNullable(request.getAttributeType()).isPresent()){
+            return Result.fail("添加通用业务属性时属性类型不能为空");
+        }
+
+
+        /*属性名和属性类型校验*/
+        if(request.getAttributeValue()==null || request.getAttributeValue().isEmpty()){
+            return Result.fail("属性值不能为空！");
+        }else{
+            if(request.getAttributeValue()!=null && request.getAttributeValue().length()>20){
+                return Result.fail("属性值长度不能超过20！");
+            }
+            if(!Pattern.matches(REGEX_NAME, request.getAttributeValue())){
+                return Result.fail("属性值仅支持中英文字母数字下划线！");
+            }
+        }
+
+        if(!(request.getAttributeType()>0 && request.getAttributeType()<6)){
+            return Result.fail("属性类型设置错误！");
+        }
+
         return this.dwCurrencyAttributeValueService.saveCurrencyAttributeValue(request, userCode);
     }
 
@@ -93,6 +121,21 @@ public class DwCurrencyAttributeValueController extends BaseController {
             return Result.fail("修改通用业务属性value值时ID不能为空");
         }
         request.setProjectId(projectId);
+        /*属性名和属性类型校验*/
+        if (!Optional.fromNullable(request.getAttributeValue()).isPresent()){
+            if(request.getAttributeValue()!=null && request.getAttributeValue().length()>20){
+                return Result.fail("属性值长度不能超过20！");
+            }
+            if(!Pattern.matches(REGEX_NAME, request.getAttributeValue())){
+                return Result.fail("属性值仅支持中英文字母数字下划线！");
+            }
+        }
+        if (Optional.fromNullable(request.getAttributeType()).isPresent()){
+            if(!(request.getAttributeType()>0 && request.getAttributeType()<6)){
+                return Result.fail("属性类型设置错误！");
+            }
+        }
+
         return this.dwCurrencyAttributeValueService.updateCurrencyAttributeValue(request, userCode);
     }
 

@@ -16,6 +16,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.regex.Pattern;
+
 /**
  * @description: 通用业务属性--业务代码 <br>
  * @date: 2021/7/28 下午1:08 <br>
@@ -30,6 +32,10 @@ import org.springframework.web.bind.annotation.*;
 public class DwCurrencyAttributeController extends BaseController {
     @Autowired
     private DwCurrencyAttributeService dwCurrencyAttributeService;
+
+    /*支持中英文字母数字下划线*/
+    public static  final  String REGEX_NAME= "^[a-zA-Z0-9_\u4e00-\u9fa5]+$";
+
 
     //获取数通用业务属性分页列表
     @ApiOperation(value="获取通用业务属性分页列表", notes="获取通用业务属性分页列表接口")
@@ -65,6 +71,30 @@ public class DwCurrencyAttributeController extends BaseController {
                                     @RequestBody DwCurrencyAttributeRequest request){
         log.info("DwCurrencyAttributeController-->saveCurrencyAttribute 添加通用业务属性 ");
         request.setProjectId(projectId);
+        if (!Optional.fromNullable(request.getAttributeName()).isPresent()){
+            return Result.fail("添加通用业务属性时属性名不能为空");
+        }
+        if (!Optional.fromNullable(request.getAttributeType()).isPresent()){
+            return Result.fail("添加通用业务属性时属性类型不能为空");
+        }
+
+
+        /*属性名和属性类型校验*/
+        if(request.getAttributeName()==null || request.getAttributeName().isEmpty()){
+            return Result.fail("属性名不能为空！");
+        }else{
+            if(request.getAttributeName()!=null && request.getAttributeName().length()>20){
+                return Result.fail("属性名长度不能超过20！");
+            }
+            if(!Pattern.matches(REGEX_NAME, request.getAttributeName())){
+                return Result.fail("属性名仅支持中英文字母数字下划线！");
+            }
+        }
+
+        if(!(request.getAttributeType()>0 && request.getAttributeType()<6)){
+            return Result.fail("属性类型设置错误！");
+        }
+
         return  this.dwCurrencyAttributeService.saveCurrencyAttribute(request,userCode);
     }
 
@@ -76,10 +106,25 @@ public class DwCurrencyAttributeController extends BaseController {
                                      @RequestHeader Long projectId,
                                       @RequestBody DwCurrencyAttributeRequest request){
         log.info("DwCurrencyAttributeController-->updateCurrencyAttribute 修改通用业务属性");
+        request.setProjectId(projectId);
         if (!Optional.fromNullable(request.getId()).isPresent()){
             return Result.fail("修改通用业务属性时ID不能为空");
         }
-        request.setProjectId(projectId);
+        /*属性名和属性类型校验*/
+        if (!Optional.fromNullable(request.getAttributeName()).isPresent()){
+            if(request.getAttributeName()!=null && request.getAttributeName().length()>20){
+                return Result.fail("属性名长度不能超过20！");
+            }
+            if(!Pattern.matches(REGEX_NAME, request.getAttributeName())){
+                return Result.fail("属性名仅支持中英文字母数字下划线！");
+            }
+        }
+        if (Optional.fromNullable(request.getAttributeType()).isPresent()){
+            if(!(request.getAttributeType()>0 && request.getAttributeType()<6)){
+                return Result.fail("属性类型设置错误！");
+            }
+        }
+
         return  this.dwCurrencyAttributeService.updateCurrencyAttribute(request,userCode);
     }
 
