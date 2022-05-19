@@ -11,17 +11,18 @@ import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
-/**
- * @description: 通用业务属性--实体对象  <br>
- * @date: 2021/8/18 下午6:51 <br>
- * @author: chenhl <br>
- * @version: 1.0 <br>
+/* *
+ * @desc  通用业务属性Value值实体对象
+ * @Return:
+ * @author: ZZP
+ * @date:  2022/5/18 15:08
+ * @Version V1.1.0
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("dw_currency_attribute")
-@ApiModel("通用业务属性请求对象")
-public class DwCurrencyAttribute extends BaseEntity {
+@TableName("dw_currency_attribute_value")
+@ApiModel("通用业务属性value值对象")
+public class DwCurrencyAttributeValue extends BaseEntity {
 
     @TableId(value = "id", type = IdType.ID_WORKER)
     private Long id;
@@ -29,13 +30,23 @@ public class DwCurrencyAttribute extends BaseEntity {
     private Long categoryId;
     /*租户ID*/
     private Long tenantId;
+    /*属性ID*/
+    private Long attributeId;
     /*属性值*/
-    @TableField(exist = false)
-    private List<DwCurrencyAttributeValue> attributeValue;
-    /**名称**/
-    private String attributeName;
-    /**编号**/
-    private Integer attributeLength;
+    private String attributeValue;
     /**通用业务属性类型：1 枚举， 2 树形， 3 数字， 4 日期，5 文本**/
     private Integer attributeType;
+
+    /**path**/
+    private String path;
+
+    private Integer level;
+
+    private Long parentId;
+
+    private Integer isLeaf;
+
+    @TableField(exist = false)
+    private List<DwCurrencyAttributeValue> childs;
+
 }

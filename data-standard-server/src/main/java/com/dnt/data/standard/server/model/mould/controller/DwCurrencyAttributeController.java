@@ -48,7 +48,7 @@ public class DwCurrencyAttributeController extends BaseController {
             @ApiImplicitParam(name = "id", value = "通用业务属性ID", required = true, dataType = "Long")
     })
     public R detailCurrencyAttribute(@PathVariable("id") Long id){
-        log.info("DwCurrencyAttributeController--> detailCurrencyAttribute 查询id为{}的数据字典详情",id);
+        log.info("DwCurrencyAttributeController--> detailCurrencyAttribute 查看id为{}的通用业务属性详情",id);
         if(!Optional.fromNullable(id).isPresent()){
             return Result.fail("查看通用业务属性信息时ID不能为空");
         }
@@ -84,13 +84,13 @@ public class DwCurrencyAttributeController extends BaseController {
     }
 
     /**检验字段指定的字段与值是否重复**/
-    @ApiOperation(value="检验字段值是否重复", notes="检验字段值是否重复接口")
+    /*@ApiOperation(value="检验字段值是否重复", notes="检验字段值是否重复接口")
     @GetMapping(value={"/remoteCheck"})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "value", value = "验证重复的值", required = true, dataType = "String"),
             @ApiImplicitParam(name = "oldValue", value = "验证重复的旧值", required = true, dataType = "String"),
             @ApiImplicitParam(name = "property", value = "验证重复的字段【数据表中的字段名】", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "categoryId", value = "分类ID", required = false, dataType = "Long")
+            @ApiImplicitParam(name = "categoryId", value = "项目ID", required = false, dataType = "Long")
     })
     public R remoteCheck(@RequestParam("value") String value,
                          @RequestParam("oldValue")   String oldValue,
@@ -104,6 +104,32 @@ public class DwCurrencyAttributeController extends BaseController {
         }
 
         boolean t = remoteCheck(property,oldValue,value,categoryId,"通用业务属性 name ",dwCurrencyAttributeService);
+        log.info("检验字段值是否重复接口:"+t+"");
+        return Result.ok(t);
+    }*/
+
+
+    /**检验字段指定的字段与值是否重复**/
+    @ApiOperation(value="检验字段值在当前项目是否重复", notes="检验字段值在当前项目是否重复")
+    @GetMapping(value={"/remoteCheckInProject"})
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "value", value = "验证重复的值", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "oldValue", value = "验证重复的旧值", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "property", value = "验证重复的字段【数据表中的字段名】", required = true, dataType = "String")
+    })
+    public R remoteCheckInProject(@RequestParam("value") String value,
+                         @RequestParam("oldValue")   String oldValue,
+                         @RequestParam("property")   String property,
+                         @RequestHeader("projectId") Long projectId){
+        if(StringUtils.isEmpty(property)){
+            return Result.fail("检查字段信息不能为空");
+        }
+        if(StringUtils.isEmpty(value)){
+            return Result.fail("检查字段的内容信息不能为空");
+        }
+
+        boolean t = remoteCheckInProject(property,oldValue,value,projectId,"通用业务属性 name ",dwCurrencyAttributeService);
+        log.info("检验字段值是否重复接口:"+t+"");
         return Result.ok(t);
     }
 
@@ -118,6 +144,10 @@ public class DwCurrencyAttributeController extends BaseController {
 
         if(!Optional.fromNullable(id).isPresent()){
             return Result.fail("删除通用业务属性信息时ID不能为空");
+        }
+        DwCurrencyAttribute dwCurrencyAttribute = this.dwCurrencyAttributeService.getById(id);
+        if(dwCurrencyAttribute.getCreateUser().equals("内置")){
+            return Result.fail("内置属性不允许删除！");
         }
         return Result.ok("删除成功了："+ this.dwCurrencyAttributeService.deleteCurrencyAttribute(id,userCode)+" 条数据");
     }

@@ -39,6 +39,11 @@ public class BaseServiceImpl<M extends BaseDao<T>, T extends BaseEntity> extends
         return baseMapper.isExist(property,value,categoryId);
     }
 
+    @Override
+    public boolean isExistInProject(String property, String value,Long projectId) {
+        return baseMapper.isExistInProject(property,value,projectId);
+    }
+
     /**构建树型数据**/
     protected List<DwMouldCategory> buildTreeCategory(List<DwMouldCategory> list,Integer leaveDefault) {
         List<DwMouldCategory> dwCate = new ArrayList<>();

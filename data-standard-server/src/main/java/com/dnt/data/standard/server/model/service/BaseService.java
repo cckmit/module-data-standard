@@ -18,4 +18,6 @@ public interface BaseService<T extends BaseEntity> extends IService<T> {
      * @return
      */
     boolean isExist(String property, String value,Long categoryId);
+
+    boolean isExistInProject(String property, String value,Long projectId);
 }

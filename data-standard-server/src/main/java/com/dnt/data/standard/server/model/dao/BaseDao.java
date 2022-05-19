@@ -18,4 +18,7 @@ public interface BaseDao<T extends BaseEntity> extends BaseMapper<T> {
      * @return
      */
     boolean isExist(String property, String value,Long categoryId);
+
+
+    boolean isExistInProject(String property, String value, Long projectId);
 }

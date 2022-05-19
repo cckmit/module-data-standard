@@ -1,12 +1,16 @@
 package com.dnt.data.standard.server.model.mould.entity.request;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.dnt.data.standard.server.model.entity.PageEntity;
+import com.dnt.data.standard.server.model.mould.entity.DwCurrencyAttributeValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * @description: 来源系统--入参对象 <br>
@@ -21,20 +25,20 @@ import lombok.NoArgsConstructor;
 @ApiModel("通用业务属性请求对象")
 public class DwCurrencyAttributeRequest extends PageEntity {
     private Long id;
-    /**分类目录**/
-    @ApiModelProperty("分类目录ID")
-    private Long categoryId;
+
     /**名称**/
     @ApiModelProperty("名称")
-    private String name;
-    /**编号**/
-    @ApiModelProperty("标识")
-    private String code;
-    /**描述**/
-    @ApiModelProperty("描述")
-    private String description;
-    /**通用业务属性类型1 来源系统 2 所属应用 3 分区保留策略 4 表中文名称**/
-    @ApiModelProperty(value = "通用业务属性类型1 来源系统 2 所属应用 3 分区保留策略 4 表中文名称",required = true)
-    private Integer type;
+    private String attributeName;
+    /**通用业务属性类型：1 枚举， 2 树形， 3 数字， 4 日期，5 文本**/
+    @ApiModelProperty(value = "通用业务属性类型：1 枚举， 2 树形， 3 数字， 4 日期，5 文本")
+    private Integer attributeType;
+    /**长度**/
+    @ApiModelProperty("长度")
+    private Integer attributeLength;
+
+    /*属性值list*/
+    @TableField(exist = false)
+    private List<DwCurrencyAttributeValue> attributeValue;
+
 
 }

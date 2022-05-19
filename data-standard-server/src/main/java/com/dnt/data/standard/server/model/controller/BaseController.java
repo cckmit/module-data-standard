@@ -51,7 +51,39 @@ public class BaseController {
 
         return result;
     }
+    /**
+     * 根据传入的列名、值检验数据是否存在
+     * @param property
+     * @param oldValue
+     * @param value
+     * @param optInfo
+     * @param baseService
+     * @return
+     */
+    public boolean remoteCheckInProject(String property, String oldValue, String value, Long projectId,String optInfo, BaseService baseService) {
+        boolean result = false;
+        //参数转码
 
+        try {
+            value = URLDecoder.decode(value, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if(log.isInfoEnabled()){
+            log.info("BaseController-->remoteCheckInProject 根据列名验证名称是否存在,openInfo:{}, property:{},value:{}",optInfo,property,value);
+        }
+        try {
+            if (StringUtils.isNotEmpty(oldValue) && StringUtils.equalsIgnoreCase(oldValue, value)) {
+                return true;
+            }
+            result = !baseService.isExistInProject(property, value,projectId);
+            log.info("根据列名验证名称是否存在:"+result);
+        } catch (Exception e) {
+            log.error(optInfo + " 验证时，发生异常Exception", e);
+        }
+
+        return result;
+    }
     /**
      * 创建下载文件目录及文件
      * @param fil

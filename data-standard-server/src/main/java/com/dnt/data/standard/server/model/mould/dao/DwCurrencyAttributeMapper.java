@@ -20,9 +20,13 @@ import org.apache.ibatis.annotations.Select;
 public interface DwCurrencyAttributeMapper extends BaseDao<DwCurrencyAttribute> {
     /**获取数来源系统分页列表**/
     @Select("<script>" +
-            " select a.id,a.category_id,a.code,a.name,a.description,a.create_user,a.create_time " +
-            " from dw_currency_attribute a " +
-            " left join dw_category b on a.category_id=b.id and b.delete_model=1 " +
+            " SELECT " +
+            "   da.*, " +
+            "   db.attribute_value as attributeValue " +
+            "FROM " +
+            "   dw_currency_attribute da " +
+            "   LEFT JOIN ( SELECT GROUP_CONCAT( attribute_value ) AS attribute_value, attribute_id FROM dw_currency_attribute_value dv WHERE dv.attribute_type = 1 AND delete_model = 1 GROUP BY dv.attribute_id ) db  " +
+            "   ON da.id = db.attribute_id" +
             " ${ew.customSqlSegment}  " +
             "</script>")
     IPage<DwCurrencyAttribute> selectCurrencyAttributePage(Page<DwCurrencyAttribute> page,
@@ -39,5 +43,17 @@ public interface DwCurrencyAttributeMapper extends BaseDao<DwCurrencyAttribute> 
     boolean isExist(@Param("property") String property,
                     @Param("value") String value,
                     @Param("categoryId") Long categoryId);
+
+    /**根据指定的字段查询是否重复**/
+    @Override
+    @Select("<script>" +
+            "select count(id) as result from" +
+            "  dw_currency_attribute  " +
+            " where ${property}=#{value} and delete_model=1" +
+            "  <if test='projectId!=null'> and project_id = #{projectId} </if>" +
+            "</script>")
+    boolean isExistInProject(@Param("property") String property,
+                             @Param("value") String value,
+                             @Param("projectId") Long projectId);
 
 }
