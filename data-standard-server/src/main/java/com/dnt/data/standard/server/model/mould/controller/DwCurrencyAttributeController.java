@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -44,6 +45,21 @@ public class DwCurrencyAttributeController extends BaseController {
         log.info("DwCurrencyAttributeController-->pageList 获取通用业务属性分页列表");
         request.setProjectId(projectId);
         return Result.ok(dwCurrencyAttributeService.selectCurrencyAttributePage(request));
+    }
+
+    //获取数通用业务属性树支持根据属性名和属性值模糊查询
+    @ApiOperation(value="获取通用业务属性树", notes="获取通用业务属性树接口")
+    @GetMapping(value={"/tree/list/{name}"})
+    public R treeList(@RequestHeader Long projectId,@PathVariable String name){
+        log.info("DwCurrencyAttributeController-->treeList 获取通用业务属性树");
+        DwCurrencyAttributeRequest request=new DwCurrencyAttributeRequest();
+        request.setProjectId(projectId);
+        if(Optional.fromNullable(name).isPresent()){
+            request.setAttributeName(name);
+        }
+
+        List list= dwCurrencyAttributeService.selectCurrencyAttributeTree(request);
+        return Result.ok(list);
     }
 
 

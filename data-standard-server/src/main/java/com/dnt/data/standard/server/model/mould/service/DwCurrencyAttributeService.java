@@ -6,6 +6,8 @@ import com.dnt.data.standard.server.model.mould.entity.DwCurrencyAttribute;
 import com.dnt.data.standard.server.model.mould.entity.request.DwCurrencyAttributeRequest;
 import com.dnt.data.standard.server.model.service.BaseService;
 
+import java.util.List;
+
 /**
  * @description: 通用业务属性--服务接口层 <br>
  * @date: 2021/8/18 下午18:04 <br>
@@ -50,4 +52,6 @@ public interface DwCurrencyAttributeService extends BaseService<DwCurrencyAttrib
      * @return
      */
     int deleteCurrencyAttribute(Long id, String userCode);
+
+    List selectCurrencyAttributeTree(DwCurrencyAttributeRequest request);
 }

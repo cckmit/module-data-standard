@@ -31,11 +31,12 @@ public class DwCurrencyAttribute extends BaseEntity {
     private Long tenantId;
     /*属性值*/
     @TableField(exist = false)
-    private List<DwCurrencyAttributeValue> attributeValue;
+    private List<DwCurrencyAttributeValue> attributeValues;
     /**名称**/
     private String attributeName;
     /**编号**/
     private Integer attributeLength;
     /**通用业务属性类型：1 枚举， 2 树形， 3 数字， 4 日期，5 文本**/
     private Integer attributeType;
+
 }

@@ -24,8 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -64,6 +63,61 @@ public class DwCurrencyAttributeServiceImpl extends BaseServiceImpl<DwCurrencyAt
         return this.dwCurrencyAttributeMapper.selectCurrencyAttributePage(page,q);
     }
 
+
+    /*获取数通用业务属性树*/
+    @Override
+    public List selectCurrencyAttributeTree(DwCurrencyAttributeRequest request) {
+        if(log.isInfoEnabled()) {
+            log.info("DwCurrencyAttributeServiceImpl-->selectCurrencyAttributeTree 获取数通用业务属性树");
+        }
+
+        //模糊搜索attribute_value
+        QueryWrapper<DwCurrencyAttributeValue> query = Wrappers.query();
+        query().select("DISTINCT(attribute_id) as attributeId")
+                .like(Optional.fromNullable(request.getAttributeName()).isPresent(),"attribute_name",request.getAttributeName())
+                .eq("delete_model",1);
+        List<DwCurrencyAttributeValue> attributeIds = this.dwCurrencyAttributeValueService.getBaseMapper().selectList(query);
+        HashSet<Long> ids = new HashSet<>();
+        attributeIds.stream().forEach(dwCurrencyAttributeValue->{
+            ids.add(dwCurrencyAttributeValue.getAttributeId());
+        });
+        QueryWrapper<DwCurrencyAttribute> queryWrapper = Wrappers.query();
+        queryWrapper.select("id,attribute_name,attribute_type")
+                .eq("delete_model",1)
+                .eq("project_id",request.getProjectId())
+                .lt("attribute_type",3)
+                .in("id",ids);
+
+        List<DwCurrencyAttribute> dwCurrencyAttribute1 = this.dwCurrencyAttributeMapper.selectList(queryWrapper);
+
+        //模糊搜索attribute_name
+        QueryWrapper<DwCurrencyAttribute> q = Wrappers.query();
+        q.select("id,attribute_name,attribute_type")
+                .eq("delete_model",1)
+                .eq("project_id",request.getProjectId())
+                .lt("attribute_type",3)
+                .like(Optional.fromNullable(request.getAttributeName()).isPresent(),"attribute_name",request.getAttributeName())
+                .orderByDesc("id");
+
+        List<DwCurrencyAttribute> dwCurrencyAttribute2 = this.dwCurrencyAttributeMapper.selectList(q);
+
+        //用LinkedList去重合并两部分数据
+        LinkedList<DwCurrencyAttribute> dwCurrencyAttributes = new LinkedList<>();
+        dwCurrencyAttributes.addAll(dwCurrencyAttribute1);
+        dwCurrencyAttributes.addAll(dwCurrencyAttribute2);
+
+        //为查询出的属性赋值
+        dwCurrencyAttributes.forEach(DwCurrencyAttribute->{
+            DwCurrencyAttributeValueRequest valueRequest = new DwCurrencyAttributeValueRequest();
+            valueRequest.setAttributeId(DwCurrencyAttribute.getId());
+            valueRequest.setAttributeType(DwCurrencyAttribute.getAttributeType());
+            List list = dwCurrencyAttributeValueService.selectCurrencyAttributeValueTree(valueRequest);
+            DwCurrencyAttribute.setAttributeValues(list);
+        });
+
+        return dwCurrencyAttributes;
+    }
+
     /**查看详情**/
     @Override
     public DwCurrencyAttribute detailCurrencyAttribute(Long id) {
@@ -78,7 +132,7 @@ public class DwCurrencyAttributeServiceImpl extends BaseServiceImpl<DwCurrencyAt
         valueRequest.setAttributeId(id);
         valueRequest.setAttributeType(attributeType);
         List list = dwCurrencyAttributeValueService.selectCurrencyAttributeValueTree(valueRequest);
-        ca.setAttributeValue(list);
+        ca.setAttributeValues(list);
         return ca;
     }
 
