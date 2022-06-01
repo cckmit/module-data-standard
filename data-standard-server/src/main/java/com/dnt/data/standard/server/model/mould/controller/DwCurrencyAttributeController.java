@@ -49,8 +49,8 @@ public class DwCurrencyAttributeController extends BaseController {
 
     //获取数通用业务属性树支持根据属性名和属性值模糊查询
     @ApiOperation(value="获取通用业务属性树", notes="获取通用业务属性树接口")
-    @GetMapping(value={"/tree/list/{name}"})
-    public R treeList(@RequestHeader Long projectId,@PathVariable String name){
+    @GetMapping(value={"/tree/list"})
+    public R treeList(@RequestHeader Long projectId,@RequestParam(value = "name",required = false) String name){
         log.info("DwCurrencyAttributeController-->treeList 获取通用业务属性树");
         DwCurrencyAttributeRequest request=new DwCurrencyAttributeRequest();
         request.setProjectId(projectId);
