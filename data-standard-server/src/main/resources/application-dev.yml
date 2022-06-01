@@ -4,6 +4,8 @@ spring:
   application:
     name: module-data-standard
   cloud:
+    inetutils:
+      preferred-networks: ${spring.cloud.inetutils.networks:10.172.1}
     nacos:
       # 服务注册地址
       discovery:
