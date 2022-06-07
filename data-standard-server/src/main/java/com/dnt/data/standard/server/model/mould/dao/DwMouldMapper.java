@@ -166,7 +166,7 @@ public interface DwMouldMapper extends BaseDao<DwMould> {
     @Select("<script>" +
             "  select id,attribute_type as type,attribute_name as name" +
             "  from dw_currency_attribute " +
-            "  where delete_model=1 and type=#{type}" +
+            "  where delete_model=1 and attribute_type=#{type}" +
             "</script>")
     List<Map<String, Object>> selectCurrencyAttributeList(@Param("type") int type);
 
