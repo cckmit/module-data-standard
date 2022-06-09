@@ -85,9 +85,10 @@ public class DwCurrencyAttributeServiceImpl extends BaseServiceImpl<DwCurrencyAt
         queryWrapper.select("id,attribute_name,attribute_type")
                 .eq("delete_model",1)
                 .eq("project_id",request.getProjectId())
-                .lt("attribute_type",3)
-                .in("id",ids);
-
+                .lt("attribute_type",3);
+        if(ids.size()>0){
+            queryWrapper.in("id",ids);
+        }
         List<DwCurrencyAttribute> dwCurrencyAttribute1 = this.dwCurrencyAttributeMapper.selectList(queryWrapper);
 
         //模糊搜索attribute_name
