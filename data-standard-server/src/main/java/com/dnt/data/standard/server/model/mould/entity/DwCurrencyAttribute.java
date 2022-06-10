@@ -39,4 +39,9 @@ public class DwCurrencyAttribute extends BaseEntity {
     /**通用业务属性类型：1 枚举， 2 树形， 3 数字， 4 日期，5 文本**/
     private Integer attributeType;
 
+    @TableField(exist = false)
+    private String attributeValue;
+
+    @TableField(exist = false)
+    private String attributeTypeName;
 }

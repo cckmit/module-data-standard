@@ -22,6 +22,14 @@ public interface DwCurrencyAttributeMapper extends BaseDao<DwCurrencyAttribute> 
     @Select("<script>" +
             " SELECT " +
             "   da.*, " +
+            "   case da.attribute_type      " +
+            "    when 1 then '枚举'        " +
+            "    when 2 then '树形'     " +
+            "    when 3 then '数字'        " +
+            "    when 4 then '日期'       " +
+            "    when 5 then '文本'   " +
+            "    else '其他' " +
+            "    end as attributeTypeName," +
             "   db.attribute_value as attributeValue " +
             "FROM " +
             "   dw_currency_attribute da " +
